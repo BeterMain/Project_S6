@@ -56,6 +56,8 @@ public class CalculatorGUI {
             }
 
         }
+        
+        input.close();
 
     }
 
@@ -63,55 +65,78 @@ public class CalculatorGUI {
 
         float result = 0;
 
-        String[] operators = {"+", "-", "*", "/"};
-
-        StringBuilder builder = new StringBuilder();
+        String partner = "";
+        String expressionOperator = "";
         boolean hasPartner = false;
-        Integer tempInt = 0;
+        float tempInt = 0;
 
-        //  Example : [1, +, 1]
+        //  Example : [1, +, (, 2, -, 2, )]
 
         /* Loop through each index of the stack */
         for (String entry : expression) {
 
-            /* Loop through each available operator in the calculator */
-            for (String operator : operators) { // TODO: Find better method with searching for correct operator
-
-                /* Check if the operator is what being checked */
-                if (!entry.equals(operator)) {
+                System.out.println("Current Entry: " + entry);
+                /* Check if the operator has a match */
+                if (entry.equals("+")) {
+                    System.out.println("Matched Operators");
+                    expressionOperator = entry;
+                    hasPartner = true;
+                }
+                else if (entry.equals("-")) {
+                    System.out.println("Matched Operators");
+                    expressionOperator = entry;
+                    hasPartner = true;
+                }
+                else if (entry.equals("*")) {
+                    System.out.println("Matched Operators");
+                    expressionOperator = entry;
+                    hasPartner = true;
+                }
+                else if (entry.equals("/")) {
+                    System.out.println("Matched Operators");
+                    expressionOperator = entry;
+                    hasPartner = true;
+                }
+                else {
                     if (hasPartner) {
+                        /* Assign the temporary integer */
+                        tempInt = Float.parseFloat(partner);
 
-                        /* Execute the operation and assign it to the result */
-                        if (operator.equals("+")) {
+                        /* Execute the operation */
+                        System.out.println("Executing Expression");
+
+                        if (expressionOperator.equals("+")) {
                             tempInt += Integer.parseInt(entry);
                         }
-                        else if (operator.equals("-")) { // TODO: Fix ERROR with not getting correct String
+                        else if (expressionOperator.equals("-")) { 
                             tempInt -= Integer.parseInt(entry);
                         }
-                        else if (operator.equals("*")) {
+                        else if (expressionOperator.equals("*")) {
                             tempInt *= Integer.parseInt(entry);
                         }
-                        else if (operator.equals("/")) {
+                        else if (expressionOperator.equals("/")) {
                             tempInt /= Integer.parseInt(entry);
                         }
+                        else {
+                            System.out.println("ERROR");
+                        }
+
+                        /* Save the result and set hasPartner to false, if there is a next expression  */
+                        partner = String.valueOf(tempInt);
+                        hasPartner = false;
                         
                     }
                     else {
-
-                        /* Add the current number to the total temp number */
-                        builder.append(entry);
+                        /* Save the entry as a partner for next number */
+                        partner = entry;
+                        System.out.println("Current partner: " + partner);
                     }
+                    
+                    
                 }
-                else {
-
-                    /* Assign the temperary integer and allow math to occur */
-                    tempInt = Integer.parseInt(builder.toString());
-                    hasPartner = true;
-                }
-            }
-            
-
         }
+
+        result = tempInt;
 
         return result;
 
